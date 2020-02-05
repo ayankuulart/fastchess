@@ -6,10 +6,10 @@ export class GameEntity implements Game {
   id: number;
 
   @Column('int')
-  black: User["id"];
+  black: User['id'];
 
   @Column('int')
-  white: User["id"];
+  white: User['id'];
 
   @Column('character')
   notation: Notation;
