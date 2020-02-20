@@ -1,40 +1,25 @@
-import { Controller, Get, Post, Req, Res, HttpStatus, Body, Request, HttpCode, Header } from '@nestjs/common';
-import { createConnection, Connection } from 'typeorm';
-import { GameEntity } from './game.entity';
+import { Controller, Get, Req } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
-@Controller('games')
+interface HeadersWithAuth extends Headers {
+  authorization: string;
+}
+
+interface RequestWithAuth extends Request {
+  headers: HeadersWithAuth;
+}
+
+@Controller('game')
 export class GameController {
-  @Post()
-  @HttpCode(204)
-  @Header('Cache-Control', 'none')
-  create(@Req() request: Request): void {
-    console.log('Create');
-    console.log(request)
+  constructor(private readonly jwtService: JwtService) { }
+  @Get('check-auth')
+  checkAuth(@Req() request: RequestWithAuth): string {
+    try {
+      this.jwtService.verify(request.headers.authorization);
+    } catch (err) {
+      return err;
+    }
 
-    // return createConnection().then(connection => {
-    //   let game = new GameEntity()
-
-    //   // game.black = _game?.black
-    //   // game.white = _game?.white
-    //   // game.notation = _game?.notation
-    //   // game.state = _game?.state
-
-    //   game.black = 0
-    //   game.white = 1
-    //   game.notation = ["e2:e4", "e7:e5"]
-    //   game.state = GameState.PLAYING
-
-    //   return connection.manager
-    //     .save(game)
-    //     .then(game => {
-    //       console.log(game)
-    //     })
-    // })
-  }
-
-  @Get()
-  findAll(@Req() request: Request): string {
-    console.log(request);
-    return 'This action returns all cats';
+    return 'jwt verify success';
   }
 }

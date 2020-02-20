@@ -5,6 +5,8 @@
   "username": "eein",
   "password": "hcHC666ku78",
   "database": "fastchess_db",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": [
+    "dist/**/*.entity{.ts,.js}"
+  ],
   "synchronize": true
 }

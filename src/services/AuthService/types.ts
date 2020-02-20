@@ -13,3 +13,11 @@ interface User {
   lastName?: string;
   rate?: number;
 }
+
+interface HeadersWithAuth extends Headers {
+  authorization: string;
+}
+
+interface RequestWithAuth extends Request {
+  headers: HeadersWithAuth;
+}
