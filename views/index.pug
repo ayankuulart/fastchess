@@ -27,7 +27,7 @@ html(lang="en")
       input(type="password" name="password" placeholder="Password" requried)
       br
       button Submit
-    h2(style="color: #fff") Check authentication
+    h2(style="color: #fff") Check authorization
     br
     button(id="check-auth-btn") Check Auth
     br
@@ -48,7 +48,7 @@ html(lang="en")
           data[element.name] = element.value;
         }
       }
-      axios.post('/signup', data).then(response => console.log(response));
+      axios.post('users/signup', data).then(response => console.log(response));
     });
 
     signInForm.addEventListener('submit', (e) => {

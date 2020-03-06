@@ -15,13 +15,10 @@ export class AuthService {
   async signIn(params: SignInData) {
     const passwordIsCorrect = await this.userService.checkPassword(params);
 
-    // tslint:disable-next-line: no-console
-    console.log('passwordIsCorrect: ', passwordIsCorrect);
-
     if (passwordIsCorrect) {
       return {
-        access_token: this.jwtService.sign({}, { expiresIn: 30 }),
-        refresh_token: this.jwtService.sign({}, { expiresIn: 60 }),
+        access_token: this.jwtService.sign({ login: params.login }, { expiresIn: 30 }),
+        refresh_token: this.jwtService.sign({ login: params.login }, { expiresIn: 60 }),
       };
     }
   }
