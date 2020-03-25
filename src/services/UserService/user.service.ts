@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SignInData } from '../AuthService/dto/signin-data.dto';
+import { RATE_DEFAULT_VALUE } from './consts';
 
 @Injectable()
 export class UserService {
@@ -16,7 +16,7 @@ export class UserService {
   ) { }
 
   async createUser(params: User) {
-    const userExist = await this.findUserByLogin(params.login);
+    const userExist = await this.findOne(params.login);
 
     if (userExist) {
       return 'User is exist. Please type another login';
@@ -29,33 +29,26 @@ export class UserService {
           firstName: params.firstName,
           lastName: params.lastName,
           accountLevel: 0,
-          rate: 800, // @TODO в константу
+          rate: RATE_DEFAULT_VALUE,
           passwordHash: hash,
         };
 
-        return this.usersRepository.create(user);
+        return this.usersRepository.save(user);
       });
     });
   }
 
-  findOne(id: string): Promise<UserEntity> {
-    return this.usersRepository.findOne(id);
-  }
-
-  async findUserByLogin(login: string): Promise<UserEntity> {
-    // @TODO findByOne
-    const user = await this.usersRepository.find({ login });
-    return user[0];
+  findOne(login: string): Promise<UserEntity> {
+    return this.usersRepository.findOne({ login });
   }
 
   async checkPassword(params: SignInData) {
-    const user = await this.findUserByLogin(params.login);
+    const user = await this.findOne(params.login);
+    console.log(user);
     const result = await bcrypt.compare(params.password, user.passwordHash);
 
     if (result) {
       return user;
     }
-
-    // return result;
   }
 }

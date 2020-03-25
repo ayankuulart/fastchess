@@ -1,0 +1,1 @@
+export const RATE_DEFAULT_VALUE = 800;

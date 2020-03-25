@@ -5,6 +5,7 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible" content="ie=edge")
     script(src="https://unpkg.com/axios/dist/axios.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/socket.io-client@2.3.0/dist/socket.io.js")
     title Document
   body(style="background: #222")
     h2(style="color: #fff") SignUp
@@ -84,3 +85,5 @@ html(lang="en")
         localStorage.setItem('refreshToken', response.data.refresh_token);
       });
     });
+
+    var socket = io();
